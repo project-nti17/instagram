@@ -1,0 +1,96 @@
+install.packages('instaR')
+library(instaR)
+require(httr)
+require(rjson)
+require(RCurl)
+
+#Authentication
+
+options(RCurlOptions = list(verbose = FALSE, capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
+
+## getting callback URL
+full_url <- oauth_callback()
+full_url <- gsub("(.*localhost:[0-9]{1,5}/).*", x=full_url, replacement="\\1")
+message <- paste("Copy and paste into Site URL on Instagram App Settings:", 
+                 full_url, "\nWhen done, press any key to continue...")
+
+invisible(readline(message))
+
+
+app_name <- "XXXXXXX"
+client_id <- "XXXXXXXXXXXXXX"
+client_secret <- "XXXXXXXXXXXX"
+scope = "public_content"
+
+instagram <- oauth_endpoint(
+  authorize = "https://api.instagram.com/oauth/authorize",
+  access = "https://api.instagram.com/oauth/access_token")  
+myapp <- oauth_app(app_name, client_id, client_secret)
+
+
+instaOAuth(client_id, client_secret, scope = c("public_content"))
+
+############# sandbox 
+
+# get user information
+Hisham_info <- getUser("hishamelwakeil", token = ig_oauth)
+# get user media in details ( download those media is optional )
+Hisham_pics <-getUserMedia(username = "hishamelwakeil" , token = ig_oauth , folder = "hishamelwakeil")
+#get user media with out downloading
+Hisham_pics <-getUserMedia(username = "hishamelwakeil" , token = ig_oauth) 
+#get likes on aspecific post
+Hisham_likes <- getLikes(id="XXXXXXXXX", token = ig_oauth, verbose = TRUE)
+#get comments on aspecific post
+Hisham_comment <- getComments( Hisham_pics$id[2], token=ig_oauth )
+# get user followers & follows in details , note that getFollowers & getFollows need "follower_list" permission
+Hisham_followers <- getFollowers( username="hishamelwakeil", token=ig_oauth )
+Hisham_follows <- getFollows( username="hishamelwakeil", token=ig_oauth )
+
+
+# Eian via instaR :
+Eian <- getUser(username = "eian_foad",token = ig_oauth)
+Eian_pics <-getUserMedia(username = "eian_foad" , token = ig_oauth , folder = "Eian_pics")
+Eian_likes <- getLikes(Eian_pics$id[1], token=ig_oauth)
+Eian_comment <- getComments( Eian$id[1], token=ig_oauth )
+Eian_followers <- getFollowers( username="eian_foad", token=ig_oauth )
+Eian_follows <- getFollows( username="eian_foad", token=ig_oauth )
+
+# mohammed Hasan via instaR :
+mohammed <- getUser(username = "moh_bn_7sn",token = ig_oauth)
+mohammed_pics <-getUserMedia(username = "moh_bn_7sn" , token = ig_oauth , folder = "mohammed")
+mohammed_likes <- getLikes(mohammed_pics$id[1], token=ig_oauth)
+mohammed_comment <- getComments( mohammed$id[1], token=ig_oauth )
+mohammed_followers <- getFollowers( username="moh_bn_7sn", token=ig_oauth )
+mohammed_follows <- getFollows( username="moh_bn_7sn", token=ig_oauth )
+
+# abdallah  via instaR :
+abdallah <- getUser(username = "abdallah.elsayd",token = ig_oauth)
+abdallah_pics <-getUserMedia(username = "abdallah.elsayd" , token = ig_oauth , folder = "abdallah")
+abdallah_likes <- getLikes(abdallah_pics$id[1], token=ig_oauth)
+abdallah_comment <- getComments( abdallah$id[1], token=ig_oauth )
+abdallah_followers <- getFollowers( username="abdallah.elsayd", token=ig_oauth )
+abdallah_follows <- getFollows( username="abdallah.elsayd", token=ig_oauth )
+
+# Rehab  via instaR :
+Rehab <- getUser(username = "ruby_amer88",token = ig_oauth)
+Rehab_pics <-getUserMedia(username = "ruby_amer88" , token = ig_oauth , folder = "abdallah")
+Rehab_likes <- getLikes(Rehab_pics$id[1], token=ig_oauth)
+Rehab_comment <- getComments( Rehab$id[1], token=ig_oauth )
+Rehab_followers <- getFollowers( username="ruby_amer88", token=ig_oauth )
+Rehab_follows <- getFollows( username="ruby_amer88", token=ig_oauth )
+
+#search Instagram 
+Matrou7 <- searchInstagram(tag ="matrou7", token=ig_oauth, n=100, folder="matrou7")
+nti_search <- searchInstagram(tag ="ntimashro3", token=ig_oauth, n=100, folder="nti")
+nti_s <- searchInstagram(tag ="ntimashro3", token=ig_oauth, n=100, folder="nti")
+
+# get Alexandira location information  
+loc_info <- getLocation( location_id=215069212, token=ig_oauth)
+
+#get popular posts on Instagram 
+popular_posts <- getPopular(token = ig_oauth, verbose = TRUE)
+
+#get hashtag counts 
+Real_madrid <- getTagCount(tag = "madrid", token = ig_oauth)
+
+
